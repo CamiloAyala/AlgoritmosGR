@@ -1,10 +1,16 @@
 import time
 #
 sumador=0
-multiplicador=int(input("Ingrese un número: "))
-multiplicando=int(input("Ingrese otro número: "))
+multiplicador=int(input("Ingrese el primer número (positvo y de max. 5 dígitos): "))
+while(multiplicador < 0 or multiplicador >= 100000):
+  multiplicador=int(input("Error: Ingrese el primer número nuevamente: "))
+
+multiplicando=int(input("Ingrese el segundo número (positvo y de max. 5 dígitos): "))
+while(multiplicando < 0 or multiplicando >= 100000):
+  multiplicando=int(input("Error: Ingrese el segundo número nuevamente: "))
 
 inicio=time.time()
+print(inicio)
 while (multiplicador>0):
 
   """"
@@ -33,4 +39,4 @@ while (multiplicador>0):
   
 fin=time.time()
 print("El resultado es: ",sumador)
-print("El tiempo que toma el algoritmo es: %.10f segundos"% (fin - inicio))
+print("El tiempo que toma el algoritmo es: %.10f segundos"% (fin-inicio))
