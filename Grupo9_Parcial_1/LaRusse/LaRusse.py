@@ -10,7 +10,6 @@ while(multiplicando < 0 or multiplicando >= 100000):
   multiplicando=int(input("Error: Ingrese el segundo número nuevamente: "))
 
 inicio=time.time()
-print(inicio)
 while (multiplicador>0):
 
   """"
