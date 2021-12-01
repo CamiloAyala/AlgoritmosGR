@@ -1,7 +1,17 @@
 # Lab3 Grupo 9: Método de bisección
+
+## Autores:
+
+1. [Gerardo Andres Hormiga González](mailto:gahormigag@unal.edu.co)
+2. [Ivan Fernando Caseres Rosas](mailto:icaseres@unal.edu.co)
+3. [Camilo Arturo Echeverry Ayala](mailto:cecheverry@unal.edu.co)
+4. [Fredy Andres Rosero Cristancho](mailto:faroseroc@unal.edu.co)
+
 [Google Docs de enunciado](https://docs.google.com/document/d/17PbQ12ueK_aBHzUAt4S3vwtmE4-OyNAEduATqXiE5cE/edit)
 
 [Google Slides del Método de bisección](https://docs.google.com/presentation/d/1qtsbJFTalOlM7qdlacQk5FTIT5Tq7c23iIX81jkiwac/edit?usp=sharing)
+
+## Código
 
  ```python
 def biseccion(f,a,b,tol):                           # O(1)
