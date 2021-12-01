@@ -94,7 +94,7 @@ fin=time.time()
 print("El valor de la raíz para {} es: {:.4}".format(f, raiz))
 print("El tiempo que toma el algoritmo es: %.10f segundos"% (fin-inicio))
 
-# Seccion 2
+# Seccion 2: Variando los parámetros del modelo:
 f="-x** 4 + 30*(x)**3 + 15*(x)**2 + 34*x"
 print("El valor de la raíz para {} es: {:.4}".format(f, biseccion(f,1,b,tol)))
 
