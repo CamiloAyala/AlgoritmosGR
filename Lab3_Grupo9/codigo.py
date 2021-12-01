@@ -49,23 +49,23 @@ def biseccion(f,a,b,tol):
         f(a)
         |
         [a]------[c]------[b]
-                        |
-                        f(b)                                              
+                           |
+                         f(b)                                              
 
         Si la imagen de a y la imagen de c tienen disinto signo: Recortar el intervalo por derecha: b<=C
         f(a)
-        |
+         |
         [a]------[c]------[b]
-                |         
+                  |         
                 f(c)        
 
         [a]------[b]......[ ]
 
         Si la imagen de c y la imagen de b tienen disinto signo: recortar el intervalo por izquierda: a<-c
-                        f(b)
-                        |
+                          f(b)
+                           |
         [a]------[c]------[b]
-                |              
+                  |              
                 f(c)       
 
         [ ]......[a]------[b]    
