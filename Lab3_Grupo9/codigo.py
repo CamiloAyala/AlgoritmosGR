@@ -23,10 +23,8 @@ def biseccion(f,a,b,tol):
     Necesitamos entonces hacer el intervalo [a,b] lo mas pqueño posible
     cambiando ya sea punto de la izquierda `a` o el de la derecha `b` por un punto mas cercano a la raíz
     """
-    # Evitamos un loop infinito
-    N=1
-    NMAX=1000
-    while (N<=NMAX):
+    error=(b - a)/2
+    while (error > tol):
         """
         Ese punto mas cercano es que el que está justo en la mitad del intervalo.
         """
@@ -40,7 +38,7 @@ def biseccion(f,a,b,tol):
             {-(b-a)/2}     {+(b-a)/2}
         """
         error=(b - a)/2
-        if (func(f,c) == 0.0 or (error < tol)):
+        if (func(f,c) == 0.0):
             break
 
         """
@@ -77,8 +75,6 @@ def biseccion(f,a,b,tol):
             b = c
         else:
             a = c
-
-        N+=1
     return c
 
 inicio=time.time()
