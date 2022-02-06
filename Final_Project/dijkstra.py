@@ -23,10 +23,10 @@ def Dijkstra(grafo, inicio, destino):
 	# O(N)
 	
   print("1")
-  pesos = {v: math.inf for v in list(nx.nodes(grafo))}
+  pesosOptimos = {v: math.inf for v in list(nx.nodes(grafo))}
 	# excepto al nodo de origen...
 	# O(1)
-  pesos[inicio] = 0
+  pesosOptimos[inicio] = 0
 
 	# Cuando se cacula la distancia relativa a un nodo
 	# Previene que se tengan en cuenta caminos mas largos
@@ -42,6 +42,7 @@ def Dijkstra(grafo, inicio, destino):
   cola.append(inicio)
 
 	# Mientras hayan vecinos optimos que recorrer
+	# Tiene que ver la cola para BFS
   while len(cola) != 0:
 		# Extraer el primero
 		# O(1)
@@ -78,11 +79,12 @@ def Dijkstra(grafo, inicio, destino):
 			# path va acumulando el peso para ciudada vecina a medida que se va bifurcando
 			# Es el peso hasta el punto de partida (que se va acumulando) +MAS+ El peso desde el punto de partida al punto `nodoAdyacente`
 			# O(1)
-      path = pesos[nodoActual] + grafo.get_edge_data(nodoActual,nodoAdyacente).get('weight')
+      path = pesosOptimos[nodoActual] + grafo.get_edge_data(nodoActual,nodoAdyacente).get('weight')
       # Evalua si el nuevo camino es menor en peso al actual
-      if path < pesos[nodoAdyacente]:
+	  # ES una ruta mejor u optima?
+      if path < pesosOptimos[nodoAdyacente]:
         # Actualiza el nuevo peso junto con el nodo al cual se pasa
-        pesos[nodoAdyacente] = path
+        pesosOptimos[nodoAdyacente] = path
 
 				# Diccionario: dict['ciudad'] = 'ciudad actual'
 				# nodoActual, pop(0) de `cola`
@@ -105,7 +107,7 @@ def Dijkstra(grafo, inicio, destino):
 	# nodosPrevios, para ir teniendo en cuenta los nodos
   node = destino
   path = []
-  peso = pesos[node]
+  peso = pesosOptimos[node]
   while node != inicio:
     path.append(node)
     node = nodosPrevios[node]
