@@ -1,13 +1,4 @@
-"""
-	El agoritmo recorre de manera global global el grafo
-	como si fuera arbol hacia abajo, caclulando las distancia relativa en cada 
-	vertice.
-  TODO: Agregar comentarios de la función
-	De network: 
-		grafo.adjacency()
-		nx.nodes(grafo)
-		grafo.get_edge_data(nodoActual,nodoAdjacente).get('weight')
-"""
+from queue import PriorityQueue
 def Dijkstra(grafo, inicio, destino):	
   # Lista: Guarda el camino realiado desde la ciudad de inicio hasta la ciudad de destino
   # Enlaza un nodo con su nodo anterior en el calculo del camino mas corto
@@ -22,7 +13,6 @@ def Dijkstra(grafo, inicio, destino):
 	# N=|ciudades|
 	# O(N)
 	
-  print("1")
   pesosOptimos = {v: math.inf for v in list(nx.nodes(grafo))}
 	# excepto al nodo de origen...
 	# O(1)
@@ -30,27 +20,46 @@ def Dijkstra(grafo, inicio, destino):
 
 	# Cuando se cacula la distancia relativa a un nodo
 	# Previene que se tengan en cuenta caminos mas largos
-	# FIFO:
 	# O(1)
-  cola = []
+  vecinosSinVisitar = PriorityQueue()
+
+	# Desde el punto de vista del arbol,
+	# Desde la raiz el primer vecino es el nodo de partida (inicio)  
 	# O(1)
-
-	#
-
-	# Desde ell punto de vista del arbol,
-	# Desde la raiz el primer vecino es el nodo de partida (inicio)
-  cola.append(inicio)
+  vecinosSinVisitar.put((pesosOptimos[inicio], inicio))
 
 	# Mientras hayan vecinos optimos que recorrer
-	# Tiene que ver la cola para BFS
-  while len(cola) != 0:
-		# Extraer el primero
-		# O(1)
-    nodoActual = cola.pop(0)
+	# Una arista nunca va estar mas de una vez en la cola `vecinosSinVisitar`
+	# Si tenemos A,B,C,D,E,F estos estaran a lo mucho distribuidos en el tiempo en la cola
+	# 1 {C}
+	# 2 {A,B}
+	# 3 {D,E}
+	# 4 {F}
+	
+	# ó 
+	# 1 {C}
+	# 2 {A,B,D,E}
+	# 4 {F}	
+
+	# ò Tdoos vecinos inmediatos de C:
+	# 1 {C}
+	# 2 {A,B,D,E,F}
+
+	# ò Todos en hilera:
+	# 1 {C}
+	# 2 {A}	
+	# 3 {B}	
+	# 4 {D}	
+	# 5 {E}	
+	# 6 {F}	
+	# O(N)
+  while vecinosSinVisitar.qsize() != 0: # -> O(N)*(O(E) + O(log N))
+		# Extraer y eliminar: Como esta basado en un arbol binario tiene que reacomodar la mitad de los elementos
+		# O(log N)
+    _ , nodoActual = vecinosSinVisitar.get()
     
     # Itera sobre los nodos adjacentes del nodo Actual
 		# dict(grafo.adjacency()) matrix de adjacencia
-
 		# 'Santa Marta': {'Armenia': {'weight': 1252},
 		# 							'Barranquilla': {'weight': 114},
 		# 							'Bogotá': {'weight': 1128},
@@ -64,7 +73,6 @@ def Dijkstra(grafo, inicio, destino):
 		# 							'Neiva': {'weight': 1335},
 		# 							'Pasto': {'weight': 2048},
 		# 							'Pereira': {'weight': 1231},
-
 		# Recorrer cada uno de los nodos vecinos del nodo actal
 		# 	la convierte en diccionario
 		# 	y del diccionario extrae los de llave: {[nodoactual]=[nodoX],[nodoactual]=[nodoY],[nodoactual]=[nodoZ],...}
@@ -72,19 +80,19 @@ def Dijkstra(grafo, inicio, destino):
 		# 	https://www.quora.com/Why-does-a-hash-table-have-O-1-search
 		# 	Como el grafo es Fullconnected, |grafo.adjacency().get(nodoActual)| = |ciudades|
 		# 	Por tanto el for es
-		# O(N)
+		# O(E)
     for nodoAdyacente in dict(grafo.adjacency()).get(nodoActual):
 			# grafo.get_edge_data nos da el peso de (nodoActual,nodoAdyacente). O los pesos (si son mas de un peso por arista)
 			# path es la suma previamente calculada (camino anterior) con el peso de la actual arista
 			# path va acumulando el peso para ciudada vecina a medida que se va bifurcando
 			# Es el peso hasta el punto de partida (que se va acumulando) +MAS+ El peso desde el punto de partida al punto `nodoAdyacente`
 			# O(1)
-      path = pesosOptimos[nodoActual] + grafo.get_edge_data(nodoActual,nodoAdyacente).get('weight')
+      caminoAcumulado = pesosOptimos[nodoActual] + grafo.get_edge_data(nodoActual,nodoAdyacente).get('weight')
       # Evalua si el nuevo camino es menor en peso al actual
-	  # ES una ruta mejor u optima?
-      if path < pesosOptimos[nodoAdyacente]:
+	  	# ES una ruta mejor u optima?
+      if caminoAcumulado < pesosOptimos[nodoAdyacente]:
         # Actualiza el nuevo peso junto con el nodo al cual se pasa
-        pesosOptimos[nodoAdyacente] = path
+        pesosOptimos[nodoAdyacente] = caminoAcumulado
 
 				# Diccionario: dict['ciudad'] = 'ciudad actual'
 				# nodoActual, pop(0) de `cola`
@@ -97,7 +105,7 @@ def Dijkstra(grafo, inicio, destino):
 				# 	['Pereria']=B/manga
 				# 	....
 
-        cola.append(nodoAdyacente)
+        vecinosSinVisitar.put((caminoAcumulado, nodoAdyacente)) # ->O(1)
 				#
 			#Fin for: 
 			# 1era iteracion va a agregar a cola todos los vecinos.
@@ -105,13 +113,15 @@ def Dijkstra(grafo, inicio, destino):
 
 	# Se recorre el arbol de conexión representado en los enlaces de
 	# nodosPrevios, para ir teniendo en cuenta los nodos
-  node = destino
-  path = []
-  peso = pesosOptimos[node]
-  while node != inicio:
-    path.append(node)
-    node = nodosPrevios[node]
-  path.append(node) 
-  path.reverse()
+  nodo = destino
+  camino = []
+  peso = pesosOptimos[nodo]
+  while nodo != inicio: # -> O(N-1): i.e.: Arbol como un Linked list lineal
+    camino.append(nodo)
+    nodo = nodosPrevios[nodo]
+  camino.append(nodo) 
+  camino.reverse()
 
-  return path, peso
+  return camino, peso
+
+
